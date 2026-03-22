@@ -26,16 +26,40 @@
 ## 模块B：磁盘空间监控
 
 **功能：**
-- 每日固定时间检查磁盘空间
-- 记录历史数据到SQLite数据库
-- 多级预警：70%（信息）、80%（警告）、90%（严重）
+- 记录磁盘空间历史数据到SQLite
+- A part 备份后检查磁盘空间变化，超过限额发送Windows通知
+
+**配置变量：**
+- `record_times`：记录时机列表（默认 `["time:0:00", "startup", "shutdown"]`）
+- `change_limit`：空间变化限额（默认 30MB）
+
+**记录时机：**
+- `time:0:00`：每天 0 点
+- `startup`：开机时
+- `shutdown`：关机时
+
+**预警：**
+- A part 备份后检测一次
+- 磁盘空间变化超过 `change_limit` 发送Windows通知
 
 **数据表：**
-- `disk_usage`: 记录每日磁盘使用情况
-- `backup_history`: 记录备份历史
+- `paths`：路径映射表
+  - `id`：主键
+  - `path`：监控路径
+  - `disk_table_name`：磁盘空间表名
+  - `backup_table_name`：备份历史表名
 
-**技术栈：**
-- Rust + sysinfo + rusqlite
+- 每个路径独立磁盘空间表（如 `disk_usage_1`）
+  - `id`：主键
+  - `used_bytes`：已用空间
+  - `timestamp`：记录时间
+
+- 每个路径独立备份历史表（如 `backup_history_1`）
+  - `id`：主键
+  - `snapshot_id`：快照ID
+  - `duration_seconds`：备份耗时
+  - `space_change_bytes`：空间变化量
+  - `timestamp`：备份时间
 
 ## 模块C：离线Web面板
 
