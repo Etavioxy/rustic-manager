@@ -105,7 +105,6 @@ npx electron-packager . rustic-panel
 **磁盘空间**
 - 柱状图：展示空间使用趋势
 - 带圆角设计
-- 支持多路径叠加显示
 - 鼠标悬停显示详情
 
 **备份历史**
@@ -135,5 +134,4 @@ npx electron-packager . rustic-panel
 ## 预警通知
 
 - 控制台输出
-- 日志文件记录
 - Windows系统通知
