@@ -5,20 +5,9 @@
 ## 模块A：智能定时备份
 
 **功能：**
-- 基础定时器（可配置间隔）
-- Hook机制：根据文件修改频率动态调整备份时机
-- 调用rustic backup命令执行备份
-
-**配置项：**
-- `base_interval_minutes`: 基础检查间隔
-- `min_interval_minutes`: 最小备份间隔
-- `max_interval_minutes`: 最大备份间隔
-- `high_freq_threshold`: 高频修改阈值
-- `low_freq_threshold`: 低频修改阈值
-- `paths`: 监控路径列表
-
-**技术栈：**
-- Rust + tokio + notify
+- 使用APScheduler定时调度
+- 调用`rustic backup --skip-if-unchanged`
+- 根据备份结果动态调整频率
 
 ## 模块B：磁盘空间监控
 
