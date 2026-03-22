@@ -64,14 +64,28 @@
 ## 模块C：离线Web面板
 
 **功能：**
-- 本地HTTP服务器
-- 展示文件修改时间线
 - 展示磁盘空间曲线
 - 展示备份历史统计
 
 **技术栈：**
-- Rust + actix-web + serde
-- 前端框架：待定
+- Electron（桌面应用）
+- better-sqlite3（读取数据库）
+
+**项目结构：**
+- `main.js`：主进程，读取 SQLite
+- `renderer.js`：渲染进程，图表渲染
+- `index.html`：界面
+- `package.json`：依赖配置
+
+**开发运行：**
+```bash
+npx electron .
+```
+
+**打包发布：**
+```bash
+npx electron-packager . rustic-panel
+```
 
 ## 数据存储
 
