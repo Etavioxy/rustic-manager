@@ -7,10 +7,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { Chart } from 'chart.js';
-import { backupChartOptions } from '../utils/chart';
+import { backupChartOptions, getChartColors } from '../utils/chart';
 
 const props = defineProps<{
   dateRange: string;
+  isDark: boolean;
 }>();
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null);
@@ -66,6 +67,7 @@ async function renderChart() {
   if (!chartCanvas.value) return;
   
   const { backups, frequency } = await loadData();
+  const colors = getChartColors(props.isDark);
   
   if (chart) {
     chart.destroy();
@@ -80,7 +82,7 @@ async function renderChart() {
           label: '空间变化',
           data: backups,
           backgroundColor: backups.map((d: any) => 
-            d.y >= 0 ? 'rgba(239, 68, 68, 0.8)' : 'rgba(34, 197, 94, 0.8)'
+            d.y >= 0 ? colors.danger : colors.success
           ),
           borderRadius: 6,
           borderSkipped: false,
@@ -90,21 +92,49 @@ async function renderChart() {
           type: 'line',
           label: '备份频率',
           data: frequency,
-          borderColor: 'rgba(147, 51, 234, 1)',
-          backgroundColor: 'rgba(147, 51, 234, 0.1)',
+          borderColor: colors.purple,
+          backgroundColor: colors.purpleLight,
           fill: true,
           tension: 0.4,
           yAxisID: 'y1'
         }
       ]
     },
-    options: backupChartOptions
+    options: {
+      ...backupChartOptions,
+      scales: {
+        ...backupChartOptions.scales,
+        x: {
+          ...backupChartOptions.scales?.x,
+          grid: { color: colors.grid },
+          ticks: { color: colors.text }
+        },
+        y: {
+          ...backupChartOptions.scales?.y,
+          grid: { color: colors.grid },
+          ticks: { color: colors.text }
+        },
+        y1: {
+          ...backupChartOptions.scales?.y1,
+          grid: { color: colors.grid },
+          ticks: { color: colors.text }
+        }
+      },
+      plugins: {
+        ...backupChartOptions.plugins,
+        legend: {
+          ...backupChartOptions.plugins?.legend,
+          labels: { color: colors.text }
+        }
+      }
+    }
   });
 }
 
 onMounted(renderChart);
 
 watch(() => props.dateRange, renderChart);
+watch(() => props.isDark, renderChart);
 </script>
 
 <style scoped>

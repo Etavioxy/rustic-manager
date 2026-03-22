@@ -1,5 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.cron import CronTrigger
 from typing import Callable, Optional
 import time
 
@@ -76,3 +77,11 @@ class BackupScheduler:
     
     def update_interval(self, interval_minutes: int):
         self._reschedule(interval_minutes)
+    
+    def add_daily_job(self, func: Callable, hour: int = 0, minute: int = 0):
+        self.scheduler.add_job(
+            func,
+            trigger=CronTrigger(hour=hour, minute=minute),
+            id="daily_job",
+            replace_existing=True
+        )

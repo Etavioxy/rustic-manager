@@ -150,6 +150,9 @@ def get_latest_disk_usage(path_id: int) -> Optional[int]:
         return None
     
     table_name = row["disk_table_name"]
+    if not validate_table_name(table_name):
+        conn.close()
+        return None
     
     cursor.execute(
         f"SELECT used_bytes FROM {table_name} ORDER BY timestamp DESC LIMIT 1"
@@ -173,6 +176,9 @@ def get_disk_usage_history(path_id: int, limit: int = 100) -> List[Dict[str, Any
         return []
     
     table_name = row["disk_table_name"]
+    if not validate_table_name(table_name):
+        conn.close()
+        return []
     
     cursor.execute(
         f"SELECT used_bytes, timestamp FROM {table_name} ORDER BY timestamp DESC LIMIT ?",
@@ -197,6 +203,9 @@ def get_backup_history(path_id: int, limit: int = 100) -> List[Dict[str, Any]]:
         return []
     
     table_name = row["backup_table_name"]
+    if not validate_table_name(table_name):
+        conn.close()
+        return []
     
     cursor.execute(
         f"SELECT snapshot_id, duration_seconds, space_change_bytes, timestamp FROM {table_name} ORDER BY timestamp DESC LIMIT ?",

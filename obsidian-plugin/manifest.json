@@ -1,0 +1,10 @@
+{
+  "id": "rustic-manager-integration",
+  "name": "Rustic Manager Integration",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Integrate with Rustic Manager for optimized backup frequency",
+  "author": "rustic-manager",
+  "authorUrl": "",
+  "isDesktopOnly": true
+}

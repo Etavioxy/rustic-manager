@@ -129,3 +129,26 @@ export function formatBytes(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
+
+export function getChartColors(isDark: boolean) {
+  if (isDark) {
+    return {
+      primary: 'rgba(74, 144, 217, 0.8)',
+      danger: 'rgba(239, 68, 68, 0.8)',
+      success: 'rgba(34, 197, 94, 0.8)',
+      purple: 'rgba(147, 51, 234, 1)',
+      purpleLight: 'rgba(147, 51, 234, 0.1)',
+      text: '#e5e5e5',
+      grid: 'rgba(255, 255, 255, 0.1)'
+    };
+  }
+  return {
+    primary: 'rgba(74, 144, 217, 0.8)',
+    danger: 'rgba(239, 68, 68, 0.8)',
+    success: 'rgba(34, 197, 94, 0.8)',
+    purple: 'rgba(147, 51, 234, 1)',
+    purpleLight: 'rgba(147, 51, 234, 0.1)',
+    text: '#333333',
+    grid: 'rgba(0, 0, 0, 0.1)'
+  };
+}
