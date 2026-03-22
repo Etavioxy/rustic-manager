@@ -27,6 +27,7 @@
 
 **功能：**
 - 记录磁盘空间历史数据到SQLite
+- 使用`rustic repoinfo --json`查询仓库存储
 - A part 备份后检查磁盘空间变化，超过限额发送Windows通知
 
 **配置变量：**
