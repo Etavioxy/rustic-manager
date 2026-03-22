@@ -1,0 +1,11 @@
+[rustic]
+profile = "N:/rustic"
+
+[backup]
+min = 3
+max = 30
+init = 15
+
+[monitor]
+record_times = ["time:0:00", "startup", "shutdown"]
+change_limit = 30
