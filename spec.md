@@ -1,5 +1,7 @@
 # Rustic Manager 规格说明
 
+**架构原则：一个 rustic 仓库对应一个 rustic-manager 实例**
+
 ## 模块A：智能定时备份
 
 **功能：**
