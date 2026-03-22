@@ -1,9 +1,14 @@
 import sqlite3
+import re
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
 DB_PATH = Path(__file__).parent.parent / "data" / "rustic-manager.db"
+
+
+def validate_table_name(name: str) -> bool:
+    return bool(re.match(r'^(disk_usage|backup_history)_\d+$', name))
 
 
 def get_connection() -> sqlite3.Connection:
@@ -89,6 +94,10 @@ def record_disk_usage(path_id: int, used_bytes: int):
         return
     
     table_name = row["disk_table_name"]
+    if not validate_table_name(table_name):
+        conn.close()
+        return
+    
     timestamp = datetime.now().isoformat()
     
     cursor.execute(
@@ -113,6 +122,10 @@ def record_backup(path_id: int, snapshot_id: Optional[str], duration_seconds: fl
         return
     
     table_name = row["backup_table_name"]
+    if not validate_table_name(table_name):
+        conn.close()
+        return
+    
     timestamp = datetime.now().isoformat()
     
     cursor.execute(
@@ -186,7 +199,7 @@ def get_backup_history(path_id: int, limit: int = 100) -> List[Dict[str, Any]]:
     table_name = row["backup_table_name"]
     
     cursor.execute(
-        f"SELECT snapshot_id, duration_seconds, space_change_bytes, timestamp FROM {backup_table_name} ORDER BY timestamp DESC LIMIT ?",
+        f"SELECT snapshot_id, duration_seconds, space_change_bytes, timestamp FROM {table_name} ORDER BY timestamp DESC LIMIT ?",
         (limit,)
     )
     rows = cursor.fetchall()

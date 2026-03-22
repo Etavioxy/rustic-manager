@@ -6,9 +6,13 @@ from typing import Optional, Tuple
 import database
 import platform
 
+toaster = None
 if platform.system() == "Windows":
-    from win10toast import ToastNotifier
-    toaster = ToastNotifier()
+    try:
+        from win10toast import ToastNotifier
+        toaster = ToastNotifier()
+    except ImportError:
+        pass
 
 
 def run_rustic_backup(profile: str) -> Tuple[bool, Optional[str], float]:
@@ -76,7 +80,7 @@ def get_repo_size(profile: str) -> Optional[int]:
 def send_notification(title: str, message: str):
     print(f"[{title}] {message}")
     
-    if platform.system() == "Windows":
+    if toaster:
         try:
             toaster.show_toast(title, message, duration=5)
         except Exception as e:

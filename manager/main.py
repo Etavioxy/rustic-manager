@@ -66,8 +66,9 @@ def main():
     print(f"Initial interval: {controller.current_interval} minutes")
     
     try:
+        import time
         while True:
-            signal.pause()
+            time.sleep(1)
     except KeyboardInterrupt:
         signal_handler(None, None)
 
